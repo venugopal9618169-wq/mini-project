@@ -2,10 +2,22 @@ import os
 import pandas as pd
 
 def run_analytics_pipeline():
-    file_path = 'data/smart_meter_data.csv'
+    # Check possible locations for the CSV file
+    possible_paths = [
+        'smart_meter_data.csv',
+        'data/smart_meter_data.csv',
+        './smart_meter_data.csv',
+        './data/smart_meter_data.csv'
+    ]
     
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Could not find {file_path}. Ensure it is inside the 'data/' folder.")
+    file_path = None
+    for path in possible_paths:
+        if os.path.exists(path):
+            file_path = path
+            break
+            
+    if not file_path:
+        raise FileNotFoundError("Could not find smart_meter_data.csv in the root or data/ folder. Please upload it!")
         
     df = pd.read_csv(file_path)
     
